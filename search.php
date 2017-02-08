@@ -7,14 +7,14 @@
 <body>
 <p />
 <div class="container">
-<form method='POST'>
-<input type='TEXT' name='search' />
+<form method='GET'>
+<input type='TEXT' name='search'  value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>"/>
 <input type='SUBMIT' name='submit' value='Search' /><p />
 <?php
 // Database login
 require_once('mysql_connection.php');
 
-if(isset($_POST['submit'])){
+if(isset($_GET['submit'])){
 	if(isset($_GET['book'])){
 		$book = $_GET['book'];
 	}else{
@@ -28,7 +28,7 @@ if(isset($_POST['submit'])){
 	}
 
 
-	$search = $conn->real_escape_string($_POST['search']);
+	$search = $conn->real_escape_string($_GET['search']);
 
 	$sql = "SELECT * FROM mock_data WHERE title LIKE '$search%' ORDER BY $book $sort";
 	$resultSet = $conn->query($sql);
@@ -40,9 +40,9 @@ if(isset($_POST['submit'])){
 				<div class='table-responsive'>
 						<table class='table'>
 							<tr>
-								<th><a href='?book=title&&sort=$sort'>Book Title</a></th>
-								<th><a href='?book=author&&sort=$sort'>Author</a></th>
-								<th><a href='?book=year&&sort=$sort'>Year</a></th>
+								<th><a href='?book=title&&sort=$sort&&search=$search&submit=Search'>Book Title</a></th>
+								<th><a href='?book=author&&sort=$sort&&search=$search&submit=Search'>Author</a></th>
+								<th><a href='?book=year&&sort=$sort&&search=$search&submit=Search'>Year</a></th>
 							</tr>
 		";
 		while($row = $resultSet->fetch_assoc())
@@ -69,7 +69,7 @@ if(isset($_POST['submit'])){
 	}
 	else
 	{
-			echo "No Results";
+			echo "No Results, please try different keyword.";
 	}
 
 }
