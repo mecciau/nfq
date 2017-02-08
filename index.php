@@ -11,17 +11,32 @@
 // Database login
 require_once('mysql_connection.php');
 
-$sql = "SELECT * FROM mock_data";
+if(isset($_GET['book'])){
+	$book = $_GET['book'];
+}else{
+	$book = 'title';
+}
+
+if(isset($_GET['sort'])){
+	$sort = $_GET['sort'];
+}else{
+	$sort = 'ASC';
+}
+
+
+
+$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
+	$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
 	echo"
 		<div class='table-responsive'>
 				<table class='table'>
 					<tr>
-						<th>Book Title</th>
-						<th>Author</th>
-						<th>Year</th>
+						<th><a href='?book=title&&sort=$sort'>Book Title</a></th>
+						<th><a href='?book=author&&sort=$sort'>Author</a></th>
+						<th><a href='?book=year&&sort=$sort'>Year</a></th>
 					</tr>
 	";
     // output data of each row
