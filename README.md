@@ -1,0 +1,1 @@
+# NFQ Akademijos uzduoties sprendimas
