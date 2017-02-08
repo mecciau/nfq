@@ -11,6 +11,8 @@
 // Database login
 require_once('mysql_connection.php');
 
+
+
 if(isset($_GET['book'])){
 	$book = $_GET['book'];
 }else{
@@ -24,47 +26,53 @@ if(isset($_GET['sort'])){
 }
 
 
-
-$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-	$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-	echo"
-		<div class='table-responsive'>
-				<table class='table'>
-					<tr>
-						<th><a href='?book=title&&sort=$sort'>Book Title</a></th>
-						<th><a href='?book=author&&sort=$sort'>Author</a></th>
-						<th><a href='?book=year&&sort=$sort'>Year</a></th>
-					</tr>
-	";
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-    	$title = $row['title'];
-    	$author = $row['author'];
-    	$year = $row['year'];
-
-    	echo"
-    		<tr>
-	    		<td>$title</td>
-	    		<td>$author</td>
-	    		<td>$year</td>
-    		</tr>
-    	";
-		
+	
 
 
-    }
-    echo"
-    		</table>
-    	</div>
-    ";
+	$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+		$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
+		echo"<p />
+		<form method='POST'>
+		<input type='TEXT' name='search' />
+		<input type='SUBMIT' name='submit' value='Search' /><p />
+			<div class='table-responsive'>
+					<table class='table'>
+						<tr>
+							<th><a href='?book=title&&sort=$sort'>Book Title</a></th>
+							<th><a href='?book=author&&sort=$sort'>Author</a></th>
+							<th><a href='?book=year&&sort=$sort'>Year</a></th>
+						</tr>
+		";
+	    // output data of each row
+	    while($row = $result->fetch_assoc()) {
+	    	$title = $row['title'];
+	    	$author = $row['author'];
+	    	$year = $row['year'];
+
+	    	echo"
+	    		<tr>
+		    		<td>$title</td>
+		    		<td>$author</td>
+		    		<td>$year</td>
+	    		</tr>
+	    	";
+			
 
 
-} else {
-    echo "0 results, Please try again";
-}
+	    }
+	    echo"
+	    		</table>
+	    	</div>
+	    ";
+
+
+	} else {
+	    echo "0 results, Please try again";
+	}
+
 $conn->close();
 
 ?>
