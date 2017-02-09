@@ -15,12 +15,13 @@
 // Database login
 	require_once('mysql_connection.php');
 
-	if(isset($_GET['submit'])){
+	
 		if(isset($_GET['book'])){
 			$book = $_GET['book'];
 		}else{
 			$book = 'title';
 		}
+
 
 		if(isset($_GET['sort'])){
 			$sort = $_GET['sort'];
@@ -29,29 +30,43 @@
 		}
 
 
-		$search = $conn->real_escape_string($_GET['search']);
 
-		$sql = "SELECT * FROM mock_data WHERE title LIKE '$search%' ORDER BY $book $sort";
+		if(isset($_GET['search'])) {
+
+			
+
+			$search = $conn->real_escape_string($_GET['search']);
+
+			$sql = "SELECT * FROM mock_data WHERE title LIKE '$search%' ORDER BY $book $sort";
+
+		} else {
+
+			$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
+		}
+
+
 		$resultSet = $conn->query($sql);
 
 		if($resultSet->num_rows > 0)
 		{
 			$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-			echo"<p />
+			?>
+			<p />
 					<div class='table-responsive'>
 							<table class='table'>
 								<tr>
-									<th><a href='?book=title&&sort=$sort&&search=$search&submit=Search'>Book Title</a></th>
+									<th><a href='?book=title&&sort=$sort&&<?php if(isset($_GET["search"])){ echo "search=$search"} ?>'>Book Title</a></th>
 									<th><a href='?book=author&&sort=$sort&&search=$search&submit=Search'>Author</a></th>
 									<th><a href='?book=year&&sort=$sort&&search=$search&submit=Search'>Year</a></th>
 								</tr>
-			";
+			<?php
+			
 			while($row = $resultSet->fetch_assoc())
 			{
 				$title = $row['title'];
 				$author = $row['author'];
 				$year = $row['year'];
-				echo"
+				echo  "
 
 							<tr>
 					    		<td>$title</td>
@@ -60,20 +75,22 @@
 				    		</tr>
 
 				";
+				
 
 
 			}
-		    echo"
+		    echo "
 	    			</table>
 		    	</div>
 		    ";
+		   
 		}
 		else
 		{
-				echo "No Results, please try different keyword.";
+			echo "No Results, please try different keyword.";
 		}
 
-	}
+
 ?>
 </div>
 </body>
