@@ -3,13 +3,30 @@
 <head>
 	<title>NFQ Akademijos uzduotis</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script type="text/javascript">
+		function goBack() {
+	    	window.history.back();
+		}
+	</script>
+	<style>
+	body {
+		padding:25px;
+	}
+	</style>
 </head>
 <body>
-<p />
+
+
+
+
+
+
 <div class="container">
-	<form method='GET' id="searchform">
-		<input type='TEXT' name='search'  value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>"/>
-		<input type='SUBMIT' name='submit' value='Search' /><p />
+	<form method='GET' id="searchform" action="index.php" class="form-inline">
+		<div class="form-group">
+			<input type='TEXT' name='search' class="form-control" value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>"/>
+		</div>
+		<button type='SUBMIT' name='submit' value='Search'  class="btn btn-default">Search</button>
 	</form>
 <?php
 // Database login
@@ -41,7 +58,9 @@
 
 		} else {
 
-			$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
+			$id = $_GET['id'];
+
+			$sql = "SELECT * FROM mock_data WHERE id = $id";
 		}
 
 
@@ -49,32 +68,23 @@
 
 		if($resultSet->num_rows > 0)
 		{
-			$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-?>
-					<p />
-					<div class='table-responsive'>
-							<table class='table'>
-								<tr>
-									<th><a href='?book=title&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
-									<th><a href='?book=author&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
-									<th><a href='?book=year&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
-								</tr>
-<?php
+
 			
 			while($row = $resultSet->fetch_assoc())
 			{
 				$title = $row['title'];
 				$author = $row['author'];
 				$year = $row['year'];
-				echo  "
+				$id = $row['id'];
+				$description = $row['description'];
+?>
+<h1><?php echo $title; ?> </h1>
+<h4>by <?php echo $author; ?> <?php echo $year; ?> </h4>
+<p><?php echo $description; ?></p>
 
-							<tr>
-					    		<td>$title</td>
-					    		<td>$author</td>
-					    		<td>$year</td>
-				    		</tr>
+<a class="btn btn-default" onclick="goBack()" role="button">Go Back</a>
 
-				";
+<?php
 				
 
 
