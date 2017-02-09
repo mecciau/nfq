@@ -26,7 +26,7 @@
 		<div class="form-group">
 			<input type='TEXT' name='search' class="form-control" value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>"/>
 		</div>
-		<button type='SUBMIT' name='submit' value='Search'  class="btn btn-default">Search</button>
+		<button type='SUBMIT' class="btn btn-default">Search</button>
 	</form>
 <?php
 // Database login
@@ -77,9 +77,11 @@
 				$year = $row['year'];
 				$id = $row['id'];
 				$description = $row['description'];
+				$genre = $row['genre'];
 ?>
 <h1><?php echo $title; ?> </h1>
 <h4>by <?php echo $author; ?> <?php echo $year; ?> </h4>
+<h5><?php echo $genre; ?> 
 <p><?php echo $description; ?></p>
 
 <a class="btn btn-default" onclick="goBack()" role="button">Go Back</a>

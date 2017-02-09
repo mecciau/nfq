@@ -15,17 +15,17 @@
 		<div class="form-group">
 			<input type='TEXT' name='search' class="form-control" value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>"/>
 		</div>
-		<button type='SUBMIT' name='submit' value='Search'  class="btn btn-default">Search</button>
+		<button type='SUBMIT' class="btn btn-default">Search</button>
 	</form>
 <?php
 // Database login
 	require_once('mysql_connection.php');
 
-	
-		if(isset($_GET['book'])){
-			$book = $_GET['book'];
+		
+		if(isset($_GET['orderby'])){
+			$orderby = $_GET['orderby'];
 		}else{
-			$book = 'title';
+			$orderby = 'title';
 		}
 
 
@@ -37,17 +37,21 @@
 
 
 
-		if(isset($_GET['search'])) {
+		if(!empty($_GET['search'])) {
+
 
 			
 
 			$search = $conn->real_escape_string($_GET['search']);
 
-			$sql = "SELECT * FROM mock_data WHERE title LIKE '$search%' ORDER BY $book $sort";
+			$sql = "SELECT * FROM mock_data WHERE (title LIKE '% $search%') OR (title LIKE '$search%') ORDER BY $orderby $sort";
 
 		} else {
+			if(isset($_GET['search'])){
+				echo 'Please enter a valid keyword.';
+			}
 
-			$sql = "SELECT * FROM mock_data ORDER BY $book $sort";
+			$sql = "SELECT * FROM mock_data ORDER BY $orderby $sort";
 		}
 
 
@@ -62,9 +66,9 @@
 							<table class='table table-hover'>
 							<thead>
 								<tr>
-									<th><a href='?book=title&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
-									<th><a href='?book=author&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
-									<th><a href='?book=year&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
+									<th><a href='?orderby=title&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
+									<th><a href='?orderby=author&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
+									<th><a href='?orderby=year&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
 								</tr>
 							</thead>
 <?php
