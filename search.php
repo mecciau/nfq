@@ -50,16 +50,16 @@
 		if($resultSet->num_rows > 0)
 		{
 			$sort == 'DESC' ? $sort = 'ASC' : $sort = 'DESC';
-			?>
-			<p />
+?>
+					<p />
 					<div class='table-responsive'>
 							<table class='table'>
 								<tr>
-									<th><a href='?book=title&&sort=$sort&&<?php if(isset($_GET["search"])){ echo "search=$search"} ?>'>Book Title</a></th>
-									<th><a href='?book=author&&sort=$sort&&search=$search&submit=Search'>Author</a></th>
-									<th><a href='?book=year&&sort=$sort&&search=$search&submit=Search'>Year</a></th>
+									<th><a href='?book=title&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
+									<th><a href='?book=author&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
+									<th><a href='?book=year&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
 								</tr>
-			<?php
+<?php
 			
 			while($row = $resultSet->fetch_assoc())
 			{
@@ -83,7 +83,6 @@
 	    			</table>
 		    	</div>
 		    ";
-		   
 		}
 		else
 		{
