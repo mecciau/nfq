@@ -32,36 +32,9 @@
 // Database login
 	require_once('mysql_connection.php');
 
-	
-		if(isset($_GET['book'])){
-			$book = $_GET['book'];
-		}else{
-			$book = 'title';
-		}
-
-
-		if(isset($_GET['sort'])){
-			$sort = $_GET['sort'];
-		}else{
-			$sort = 'ASC';
-		}
-
-
-
-		if(isset($_GET['search'])) {
-
-			
-
-			$search = $conn->real_escape_string($_GET['search']);
-
-			$sql = "SELECT * FROM mock_data WHERE title LIKE '$search%' ORDER BY $book $sort";
-
-		} else {
 
 			$id = $_GET['id'];
-
 			$sql = "SELECT * FROM mock_data WHERE id = $id";
-		}
 
 
 		$resultSet = $conn->query($sql);
@@ -70,8 +43,8 @@
 		{
 
 			
-			while($row = $resultSet->fetch_assoc())
-			{
+			$row = $resultSet->fetch_assoc();
+			
 				$title = $row['title'];
 				$author = $row['author'];
 				$year = $row['year'];
@@ -79,22 +52,14 @@
 				$description = $row['description'];
 				$genre = $row['genre'];
 ?>
-<h1><?php echo $title; ?> </h1>
-<h4>by <?php echo $author; ?> <?php echo $year; ?> </h4>
-<h5><?php echo $genre; ?> 
-<p><?php echo $description; ?></p>
+				<h1><?php echo $title; ?> </h1>
+				<h4>by <?php echo $author; ?> <?php echo $year; ?> </h4>
+				<h5><?php echo $genre; ?> 
+				<p><?php echo $description; ?></p>
 
-<a class="btn btn-default" onclick="goBack()" role="button">Go Back</a>
+				<a class="btn btn-default" onclick="goBack()" role="button">Go Back</a>
 
 <?php
-				
-
-
-			}
-		    echo "
-	    			</table>
-		    	</div>
-		    ";
 		}
 		else
 		{

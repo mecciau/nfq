@@ -21,6 +21,32 @@
 // Database login
 	require_once('mysql_connection.php');
 
+
+		// skaiciuojam kiek table turi rows
+		if(!empty($_GET['search'])) {
+			$search = $conn->real_escape_string($_GET['search']);
+			$count = $conn->query("SELECT * FROM mock_data WHERE (title LIKE '% $search%') OR (title LIKE '$search%')")->num_rows;
+		}
+		else {
+			$count = $conn->query('SELECT * FROM mock_data')->num_rows;
+		}
+		
+		// items per page
+		$perPage = 30;
+		$offset = 0; 
+
+
+		$nrOfPages = $count / $perPage;
+
+
+
+		if(!empty($_GET['page'])){
+		$offset = $_GET['page'];
+		}
+
+		$offset = $offset * $perPage;
+
+
 		
 		if(isset($_GET['orderby'])){
 			$orderby = $_GET['orderby'];
@@ -44,14 +70,15 @@
 
 			$search = $conn->real_escape_string($_GET['search']);
 
-			$sql = "SELECT * FROM mock_data WHERE (title LIKE '% $search%') OR (title LIKE '$search%') ORDER BY $orderby $sort";
+			$sql = "SELECT * FROM mock_data WHERE (title LIKE '% $search%') OR (title LIKE '$search%') ORDER BY $orderby $sort LIMIT $offset, $perPage";
 
 		} else {
 			if(isset($_GET['search'])){
 				echo 'Please enter a valid keyword.';
 			}
 
-			$sql = "SELECT * FROM mock_data ORDER BY $orderby $sort";
+			$sql = "SELECT * FROM mock_data ORDER BY $orderby $sort LIMIT $offset, $perPage";
+			
 		}
 
 
@@ -102,9 +129,53 @@
 		{
 			echo "No Results, please try different keyword.";
 		}
+?>
+<ul class="pagination">
+	<?php
+
+
+	if(empty($_GET['page'])) {
+		$_GET['page'] = 1;
+	}
+
+	$previousPage = $_GET['page'] - 1; 
+	if($_GET['page'] > 1) {
+		if(!empty($_GET['search'])) {
+			$link = "<li><a href='?page=$previousPage&&search=$search'>Previous </a><li>";
+		} else {
+			$link = "<li><a href='?page=$previousPage'>Previous </a><li>";
+		}
+		echo $link;
+	}
+
+
+	for($i=1; $i<$nrOfPages; $i++) {
+		if(!empty($_GET['search'])) {
+			$link = "<li><a href='?page=$i&&search=$search'>$i </a><li>";
+		} else {
+			$link = "<li><a href='?page=$i'>$i </a><li>";
+		}
+		echo $link;
+	}
+	if(empty($_GET['page'])) {
+		$nextPage = 1;
+	}
+
+
+
+	$nextPage = $_GET['page'] + 1;
+	if($_GET['page'] < floor($nrOfPages)) {
+		if(!empty($_GET['search'])) {
+			$link = "<li><a href='?page=$nextPage&&search=$search'>Next </a><li>";
+		} else {
+			$link = "<li><a href='?page=$nextPage'>Next </a><li>";
+		}
+		echo $link;		
+	}
 
 
 ?>
+</ul>
 </div>
 </body>
 </html>
