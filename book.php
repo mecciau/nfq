@@ -53,8 +53,8 @@
 				$genre = $row['genre'];
 ?>
 				<h1><?php echo $title; ?> </h1>
-				<h4>by <?php echo $author; ?> <?php echo $year; ?> </h4>
-				<h5><?php echo $genre; ?> 
+				<h3>by <?php echo $author; ?> <?php echo $year; ?> </h3>
+				<p class="lead">Genre: <?php echo $genre; ?> </p>
 				<p><?php echo $description; ?></p>
 
 				<a class="btn btn-default" onclick="goBack()" role="button">Go Back</a>

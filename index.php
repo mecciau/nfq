@@ -93,9 +93,9 @@
 							<table class='table table-hover'>
 							<thead>
 								<tr>
-									<th><a href='?orderby=title&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
-									<th><a href='?orderby=author&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
-									<th><a href='?orderby=year&&sort=<?php echo $sort; if(isset($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
+									<th><a href='?orderby=title&&sort=<?php echo $sort; if(!empty($_GET["search"])){ echo "&&search=$search";} ?>'>Book Title</a></th>
+									<th><a href='?orderby=author&&sort=<?php echo $sort; if(!empty($_GET["search"])){ echo "&&search=$search";} ?>'>Author</a></th>
+									<th><a href='?orderby=year&&sort=<?php echo $sort; if(!empty($_GET["search"])){ echo "&&search=$search";} ?>'>Year</a></th>
 								</tr>
 							</thead>
 <?php
@@ -120,10 +120,7 @@
 
 
 			}
-		    echo "
-	    			</table>
-		    	</div>
-		    ";
+		    echo "</table></div>";
 		}
 		else
 		{
@@ -157,6 +154,9 @@
 		}
 		echo $link;
 	}
+
+
+	
 	if(empty($_GET['page'])) {
 		$nextPage = 1;
 	}
